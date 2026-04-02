@@ -12,7 +12,7 @@ from tqdm import tqdm
 device = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 
 # 2. 모델 아키텍처 정의
-class MLP(nn.Module): #
+class MLP(nn.Module): 
     def __init__(self):
         super().__init__()
         self.fc = nn.Sequential(nn.Flatten(), nn.Linear(3*32*32, 512), nn.ReLU(), nn.Linear(512, 10))
@@ -28,12 +28,12 @@ class CNNFromScratch(nn.Module):
         self.classifier = nn.Linear(64 * 8 * 8, 10)
     def forward(self, x): return self.classifier(self.features(x).view(x.size(0), -1))
 
-def get_transfer_model(): #
+def get_transfer_model(): 
     model = models.resnet18(weights='IMAGENET1K_V1')
     model.fc = nn.Linear(model.fc.in_features, 10)
     return model.to(device)
 
-# 3. 모델 선택 로직 (Dictionary Mapping)
+# 모델 매핑 딕셔너리
 MODELS = {
     "mlp": MLP,
     "cnn": CNNFromScratch,
@@ -41,7 +41,7 @@ MODELS = {
 }
 
 def train(model_name, epochs, batch_size, lr):
-    # 데이터 파이프라인
+    # 데이터 파이프라인 (CIFAR-10 기준)
     transform = transforms.Compose([
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
@@ -53,7 +53,7 @@ def train(model_name, epochs, batch_size, lr):
         batch_size=batch_size, shuffle=True, num_workers=2
     )
 
-    # 모델 인스턴스화
+    # 모델 인스턴스화 및 장치 할당
     if model_name == "transfer":
         model = MODELS[model_name]()
     else:
@@ -73,19 +73,20 @@ def train(model_name, epochs, batch_size, lr):
             loss = criterion(model(imgs), labels)
             loss.backward()
             optimizer.step()
-            loop.set_postfix(loss=loss.item())
+            loop.set_postfix(loss=f"{loss.item():.4f}")
     
-    torch.save(model.state_dict(), f"final_{model_name}_weights.pth")
-    print(f"✅ {model_name} 학습 완료 및 가중치 저장 성공.")
+    # 학습된 가중치 저장
+    save_path = f"final_{model_name}_weights.pth"
+    torch.save(model.state_dict(), save_path)
+    print(f"✅ {model_name} 학습 완료 및 가중치 저장 성공: {save_path}")
 
 if __name__ == "__main__":
-    # argparse 설정: 터미널 명령어로 제어 가능
-    parser = argparse.ArgumentParser(description="PyTorch Image Classification Pipeline")
+    # 터미널 인자 설정
+    parser = argparse.ArgumentParser(description="PyTorch Vision Engineering Pipeline")
     parser.add_argument("--model", type=str, default="cnn", choices=["mlp", "cnn", "transfer"], help="학습할 모델 선택")
     parser.add_argument("--epochs", type=int, default=5, help="학습 에포크 수")
     parser.add_argument("--batch", type=int, default=64, help="배치 사이즈")
     parser.add_argument("--lr", type=float, default=0.001, help="학습률")
 
     args = parser.parse_args()
-    
     train(model_name=args.model, epochs=args.epochs, batch_size=args.batch, lr=args.lr)
