@@ -22,10 +22,10 @@
 │  ├─ 01_pytorch_fundamentals.py  # 텐서 기초 및 Autograd
 │  ├─ 02_cifar10_architecture_comparison.py  # MLP/CNN/VGG 비교
 │  └─ 03_cat_dog_transfer_learning.py  # ResNet 전이 학습
-├─ main.py  # argparse가 적용된 최종 통합 실행 스크립트
-├─ README.md  # 프로젝트 명세서 및 회고록
-├─ requirements.txt  # 필수 패키지 목록
-└─ .gitignore  # 대용량 데이터 및 가중치 파일 제외
+├─ main.py  # 통합 실행 스크립트
+├─ README.md  
+├─ requirements.txt  
+└─ .gitignore
 ```
 * **Dataset**: CIFAR-10(자동 다운로드), Kaggle Cats vs Dogs(PetImages 폴더 필요)
 
