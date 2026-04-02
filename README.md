@@ -23,16 +23,16 @@
 
 | 아키텍처 | 이미지 처리 방식 및 한계 | 핵심 차별점 |
 | :--- | :--- | :--- |
-| **MLP (다층 퍼셉트론)** | 2D 이미지를 1D로 강제로 펼침(Flatten).<br>픽셀 간의 **공간적(Spatial) 정보가 완전히 손실됨.** | 파라미터가 비효율적으로 많고, 이미지의 위치 변화나 왜곡에 매우 취약함. |
-| **CNN (합성곱 신경망)** | 2D 형태를 유지한 채 필터(Filter)가 이동하며 연산.<br>이미지의 **지역적 패턴(Feature Map)을 학습함.** | 공간 정보를 유지하면서도 파라미터 수를 획기적으로 줄여 컴퓨터 비전의 표준이 됨. |
-| **VGG Network** | 3x3의 작은 합성곱 필터를 여러 겹(Deep) 쌓아올림.<br>넓은 **수용 영역(Receptive Field)을 확보함.** | CNN보다 훨씬 깊은 계층적 특징(Hierarchical Feature)을 추출하여 표현력이 극대화됨. |
+| **MLP (다층 퍼셉트론)** | 2D 이미지를 1D로 강제로 펼침(Flatten). 픽셀 간의 공간적(Spatial) 정보가 완전히 손실됨. | 파라미터가 비효율적으로 많고, 이미지의 위치 변화나 왜곡에 매우 취약함. |
+| **CNN (합성곱 신경망)** | 2D 형태를 유지한 채 필터(Filter)가 이동하며 연산. 이미지의 지역적 패턴(Feature Map)을 학습함. | 공간 정보를 유지하면서도 파라미터 수를 획기적으로 줄여 컴퓨터 비전의 표준이 됨. |
+| **VGG Network** | 3x3의 작은 합성곱 필터를 여러 겹(Deep) 쌓아올림. 넓은 수용 영역(Receptive Field)을 확보함. | CNN보다 훨씬 깊은 계층적 특징(Hierarchical Feature)을 추출하여 표현력이 극대화됨. |
 
 ### 2. 하드웨어 메모리 파이프라인 최적화
 | 단계 | 하드웨어 | 파이프라인 역할 | 최적화 포인트 |
 | :--- | :--- | :--- | :--- |
-| **Storage** | **Disk** | 전체 데이터셋 보관 (`Dataset`) | I/O 지연 최소화를 위한 직렬화 포맷 활용 |
-| **Preparation** | **RAM / CPU** | 배치(Batch) 준비 및 데이터 증강 | `DataLoader`의 `num_workers` 설정을 통한 병렬 로드 |
-| **Workbench** | **VRAM / GPU** | 실질적인 텐서 연산 및 가중치 업데이트 | 적절한 `Batch Size` 설정을 통한 OOM(Out of Memory) 방지 |
+| **Storage (저장소)** | **Disk** | 전체 데이터셋 보관 (`Dataset`) | I/O 지연 최소화를 위한 직렬화 포맷 활용 |
+| **Preparation (준비)** | **RAM / CPU** | 배치(Batch) 준비 및 데이터 증강 | `DataLoader`의 `num_workers` 설정을 통한 병렬 로드 |
+| **Workbench (작업대)** | **VRAM / GPU** | 실질적인 텐서 연산 및 가중치 업데이트 | 적절한 `Batch Size` 설정을 통한 OOM(Out of Memory) 방지 |
 
 ## 📝 회고 및 향후 과제 (Retrospective & Future Work)
 
