@@ -7,7 +7,7 @@
 ## 📌 프로젝트 요약 (Project Overview)
 본 프로젝트는 PyTorch를 활용하여 **텐서 조작부터 신경망 아키텍처(MLP, CNN, VGG)의 직접 구현, 그리고 최신 전이 학습(Transfer Learning) 기법**까지 이미지 분류 파이프라인의 전 과정을 담고 있습니다. 프레임워크 뒤에 숨겨진 수학적 원리와 하드웨어 최적화 메커니즘을 코드로 증명하는 데 집중했습니다.
 
-## 🎯 핵심 역량 (Core Competencies)
+## 🎯 핵심 목표 (Motivation)
 | 역량 키워드 | 세부 내용 (핵심 역량) |
 | :--- | :--- |
 | **🛠️ 아키텍처 설계** | `nn.Module`을 활용한 MLP, CNN, VGG 모델 직접 설계 및 가중치 업데이트 원리 체득 |
@@ -15,7 +15,19 @@
 | **🧠 하드웨어 이해** | RAM/VRAM 간 데이터 병목 현상 분석 및 `num_workers`, `Batch Size` 최적화 해결 |
 | **📊 성능 비교 분석** | 아키텍처별 특징 추출 능력(Feature Extraction)을 정량적으로 비교 분석하는 역량 |
 
-## 💡 단계별 학습 로직 (Learning Pipeline)
+## 1. 프로젝트 구조 및 데이터셋 안내
+본 프로젝트는 데이터 보안 및 용량 관리를 위해 원본 데이터셋을 포함하지 않습니다.
+├─ notebooks/  # 실험 및 연구 과정이 담긴 스크립트 모음
+│  ├─ 01_pytorch_fundamentals.py  # 텐서 기초 및 Autograd
+│  ├─ 02_cifar10_architecture_comparison.py  # MLP/CNN/VGG 비교
+│  └─ 03_cat_dog_transfer_learning.py  # ResNet 전이 학습
+├─ main.py  # 최종 정제된 통합 실행 모델
+├─ README.md  
+├─ requirements.txt  
+└─ .gitignore
+* **Dataset**: CIFAR-10(자동 다운로드), Kaggle Cats vs Dogs(PetImages 폴더 필요)
+
+## 2. 단계별 학습 로직 (Learning Pipeline)
 
 ### Stage 1. 기초 및 원리 (Fundamentals)
 - **파일**: `01_pytorch_fundamentals.py`
@@ -28,14 +40,6 @@
 ### Stage 3. 고성능 실무 모델링 (Transfer Learning)
 - **파일**: `03_cat_dog_transfer_learning.py`
 - **내용**: Pre-trained ResNet18 기반의 전이 학습을 통해 실무 레벨의 정확도 달성
-
-## 📂 디렉토리 구조 및 데이터셋 안내
-본 프로젝트는 데이터 보안 및 용량 관리를 위해 원본 데이터셋을 포함하지 않습니다.
-* **Dataset**: CIFAR-10(자동 다운로드), Kaggle Cats vs Dogs(PetImages 폴더 필요)
-* **Structure**:
-  - `notebooks/`: 실험 및 연구 과정이 담긴 스크립트 모음
-  - `main.py`: 최종 정제된 통합 실행 모델
-  - `.gitignore`: 대용량 데이터셋 및 가중치 파일(`.pth`) 제외 설정
 
 ## 💡 회고록 및 향후 과제 (Retrospective & Future Work)
 
