@@ -1,3 +1,4 @@
+import argparse
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -9,22 +10,15 @@ from tqdm import tqdm
 
 # 1. 하드웨어 설정 (VRAM 가속 활성화)
 device = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
-print(f"🚀 현재 사용 장치: {device}")
 
-# 2. 데이터 파이프라인 (CIFAR-10)
-transform = transforms.Compose([
-    transforms.RandomHorizontalFlip(), # 데이터 증강
-    transforms.ToTensor(),
-    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-])
+# 2. 모델 아키텍처 정의
+class MLP(nn.Module): #
+    def __init__(self):
+        super().__init__()
+        self.fc = nn.Sequential(nn.Flatten(), nn.Linear(3*32*32, 512), nn.ReLU(), nn.Linear(512, 10))
+    def forward(self, x): return self.fc(x)
 
-train_loader = DataLoader(
-    torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform),
-    batch_size=64, shuffle=True, num_workers=2 # 병목 최적화
-)
-
-# 3. 모델 라이브러리
-class CNNFromScratch(nn.Module): #
+class CNNFromScratch(nn.Module): 
     def __init__(self):
         super().__init__()
         self.features = nn.Sequential(
@@ -39,15 +33,40 @@ def get_transfer_model(): #
     model.fc = nn.Linear(model.fc.in_features, 10)
     return model.to(device)
 
-# 4. 학습 루프
-model = CNNFromScratch().to(device) # 또는 get_transfer_model()
-optimizer = optim.Adam(model.parameters(), lr=0.001)
-criterion = nn.CrossEntropyLoss()
+# 3. 모델 선택 로직 (Dictionary Mapping)
+MODELS = {
+    "mlp": MLP,
+    "cnn": CNNFromScratch,
+    "transfer": get_transfer_model
+}
 
-def train():
+def train(model_name, epochs, batch_size, lr):
+    # 데이터 파이프라인
+    transform = transforms.Compose([
+        transforms.RandomHorizontalFlip(),
+        transforms.ToTensor(),
+        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+    ])
+
+    train_loader = DataLoader(
+        torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform),
+        batch_size=batch_size, shuffle=True, num_workers=2
+    )
+
+    # 모델 인스턴스화
+    if model_name == "transfer":
+        model = MODELS[model_name]()
+    else:
+        model = MODELS[model_name]().to(device)
+
+    optimizer = optim.Adam(model.parameters(), lr=lr)
+    criterion = nn.CrossEntropyLoss()
+
+    print(f"🚀 학습 시작: Model={model_name}, Epochs={epochs}, Batch={batch_size}, LR={lr}")
+
     model.train()
-    for epoch in range(5):
-        loop = tqdm(train_loader, desc=f"Epoch {epoch+1}")
+    for epoch in range(epochs):
+        loop = tqdm(train_loader, desc=f"Epoch [{epoch+1}/{epochs}]")
         for imgs, labels in loop:
             imgs, labels = imgs.to(device), labels.to(device)
             optimizer.zero_grad()
@@ -56,8 +75,17 @@ def train():
             optimizer.step()
             loop.set_postfix(loss=loss.item())
     
-    torch.save(model.state_dict(), "final_model_weights.pth") # 가중치 저장
-    print("✅ 모델 가중치 저장 완료.")
+    torch.save(model.state_dict(), f"final_{model_name}_weights.pth")
+    print(f"✅ {model_name} 학습 완료 및 가중치 저장 성공.")
 
 if __name__ == "__main__":
-    train()
+    # argparse 설정: 터미널 명령어로 제어 가능
+    parser = argparse.ArgumentParser(description="PyTorch Image Classification Pipeline")
+    parser.add_argument("--model", type=str, default="cnn", choices=["mlp", "cnn", "transfer"], help="학습할 모델 선택")
+    parser.add_argument("--epochs", type=int, default=5, help="학습 에포크 수")
+    parser.add_argument("--batch", type=int, default=64, help="배치 사이즈")
+    parser.add_argument("--lr", type=float, default=0.001, help="학습률")
+
+    args = parser.parse_args()
+    
+    train(model_name=args.model, epochs=args.epochs, batch_size=args.batch, lr=args.lr)
