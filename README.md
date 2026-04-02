@@ -18,7 +18,6 @@
 ## 1. 프로젝트 구조 및 데이터셋 안내
 본 프로젝트는 데이터 보안 및 용량 관리를 위해 원본 데이터셋을 포함하지 않습니다.
 ```text
-pytorch-vision-engineering
 ├─ notebooks/  # 실험 및 연구 기록 보관 폴더
 │  ├─ 01_pytorch_fundamentals.py  # 텐서 기초 및 Autograd
 │  ├─ 02_cifar10_architecture_comparison.py  # MLP/CNN/VGG 비교
