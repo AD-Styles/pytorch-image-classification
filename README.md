@@ -6,7 +6,6 @@
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 
 ## 📌 프로젝트 요약 (Project Overview)
-안녕하세요, 다가오는 6~7월 실무 합류를 목표로 딥러닝 기본기를 탄탄히 다지고 있는 개발자 AD입니다.
 본 프로젝트는 단순한 API 호출을 넘어, PyTorch의 **텐서(Tensor) 기초부터 다층 퍼셉트론(MLP), 합성곱 신경망(CNN), VGG 네트워크까지 직접 밑바닥부터 구현(From Scratch)** 해보며 딥러닝 아키텍처의 발전 과정을 코드로 증명한 프로젝트입니다. 특히, 대용량 이미지 데이터를 다룰 때 발생하는 하드웨어 병목 현상을 분석하고 파이프라인을 최적화하는 데 집중했습니다.
 
 ## 🎯 핵심 목표 및 역량 (Core Competencies)
