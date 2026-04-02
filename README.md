@@ -34,7 +34,7 @@
 | **Preparation (준비)** | **RAM / CPU** | 배치(Batch) 준비 및 데이터 증강 | `DataLoader`의 `num_workers` 설정을 통한 병렬 로드 |
 | **Workbench (작업대)** | **VRAM / GPU** | 실질적인 텐서 연산 및 가중치 업데이트 | 적절한 `Batch Size` 설정을 통한 OOM(Out of Memory) 방지 |
 
-## 📝 회고 및 향후 과제 (Retrospective & Future Work)
+## 💡 회고록 및 향후 과제 (Retrospective & Future Work)
 
 **1. 공간 정보의 중요성 수치화 및 OOM 트러블슈팅**
 동일한 CIFAR-10 데이터를 학습시킬 때, 이미지를 1D로 펴버리는 MLP와 지역적 특징을 보존하는 CNN/VGG의 성능 차이를 보며 '구조가 곧 모델의 이해력'임을 확인했습니다. 모델이 깊어지면서 필연적으로 마주한 Out of Memory 현상은 오히려 하드웨어 파이프라인을 깊게 파고드는 계기가 되었습니다. 배치 사이즈를 조절하고 `num_workers`로 CPU-GPU 간의 병목을 해결하며 실무적인 엔지니어링 감각을 키웠습니다.
