@@ -27,6 +27,7 @@ pytorch-vision-engineering
 ├─ README.md  # 프로젝트 명세서 및 회고록
 ├─ requirements.txt  # 필수 패키지 목록
 └─ .gitignore  # 대용량 데이터 및 가중치 파일 제외
+```
 * **Dataset**: CIFAR-10(자동 다운로드), Kaggle Cats vs Dogs(PetImages 폴더 필요)
 
 ## 2. 단계별 학습 로직 (Learning Pipeline)
