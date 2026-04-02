@@ -17,14 +17,16 @@
 
 ## 1. 프로젝트 구조 및 데이터셋 안내
 본 프로젝트는 데이터 보안 및 용량 관리를 위해 원본 데이터셋을 포함하지 않습니다.
-├─ notebooks/  # 실험 및 연구 과정이 담긴 스크립트 모음
+```text
+pytorch-vision-engineering
+├─ notebooks/  # 실험 및 연구 기록 보관 폴더
 │  ├─ 01_pytorch_fundamentals.py  # 텐서 기초 및 Autograd
 │  ├─ 02_cifar10_architecture_comparison.py  # MLP/CNN/VGG 비교
 │  └─ 03_cat_dog_transfer_learning.py  # ResNet 전이 학습
-├─ main.py  # 최종 정제된 통합 실행 모델
-├─ README.md  
-├─ requirements.txt  
-└─ .gitignore
+├─ main.py  # argparse가 적용된 최종 통합 실행 스크립트
+├─ README.md  # 프로젝트 명세서 및 회고록
+├─ requirements.txt  # 필수 패키지 목록
+└─ .gitignore  # 대용량 데이터 및 가중치 파일 제외
 * **Dataset**: CIFAR-10(자동 다운로드), Kaggle Cats vs Dogs(PetImages 폴더 필요)
 
 ## 2. 단계별 학습 로직 (Learning Pipeline)
