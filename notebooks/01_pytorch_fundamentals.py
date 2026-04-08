@@ -1,7 +1,4 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# # 08. PyTorch 기초 튜토리얼
+# # PyTorch 기초 튜토리얼
 # 
 # ## 📋 학습 목표
 # - PyTorch 설치 및 환경 설정 (GPU/MPS 감지)
@@ -119,10 +116,7 @@ print(f"dtype: {x5.dtype}, shape: {x5.shape}")
 # 
 # #### 언제 `item()`을 쓰나?
 # - 스칼라 텐서(예: `loss`)를 **파이썬 float/int로 뽑아서** 출력/저장/조건문에 쓰고 싶을 때
-# - 주의: GPU/MPS 텐서에서 `item()`은 값을 가져오며 동기화가 생길 수 있어 너무 자주 호출하면 느려질 수 있습니다.
-
-# In[ ]:
-
+# - 주의: GPU/MPS 텐서에서 `item()`은 값을 가져오며 동기화가 생길 수 있어 너무 자주 호출하면 느려질 수 있음.
 
 import numpy as np
 import torch
@@ -145,7 +139,7 @@ print(f"PyTorch → NumPy: {back_to_numpy}")
 print(f"타입: {type(back_to_numpy)}")
 print()
 
-# 💡 주의: 공유(view) 관계면 한쪽을 in-place로 수정할 때 다른 쪽도 그대로 반영됩니다
+# 💡 주의: 공유(view) 관계면 한쪽을 in-place로 수정할 때 다른 쪽도 그대로 반영
 np_array[0] = 999
 print(f"NumPy 수정 후 PyTorch 텐서: {torch_tensor}")
 print("⚠️ 메모리를 공유하면 한쪽 수정 → 다른 쪽도 변경")
@@ -196,13 +190,13 @@ print(f"loss_like (tensor): {loss_like}")
 print(f"loss_like.detach().item() (logging용): {loss_like.detach().item()}")
 
 
-# ### 2.3 Shape와 차원 정보
+# ### Shape와 차원 정보
 # 
-# 텐서의 형태(shape)와 차원(dimension) 정보를 확인하는 방법을 학습합니다.
+# 텐서의 형태(shape)와 차원(dimension) 정보를 확인하는 방법을 학습.
 # 
 # #### 왜 중요한가?
 # 
-# 딥러닝에서 **텐서의 형태는 코드의 정확성을 보장하는 첫 번째 방어선**입니다:
+# 딥러닝에서 **텐서의 형태는 코드의 정확성을 보장하는 첫 번째 방어선**
 # - 형태가 예상과 다르면 런타임 에러 발생 → 디버깅의 출발점
 # - 배치 크기, 채널 수, 이미지 크기를 명확히 추적해야 함
 # - 모델 입출력 형태를 이해해야 파이프라인 구축 가능
@@ -228,9 +222,6 @@ print(f"loss_like.detach().item() (logging용): {loss_like.detach().item()}")
 # 2. **차원 검증**: `assert tensor.shape == (16, 3, 224, 224)`
 # 3. **동적 배치 처리**: `batch_size = tensor.shape[0]`
 
-# In[ ]:
-
-
 print("3️⃣ Shape와 차원 정보")
 print("=" * 50)
 
@@ -255,9 +246,9 @@ print(f"채널 수: {image_batch.shape[1]}")
 print(f"높이: {image_batch.shape[2]}, 너비: {image_batch.shape[3]}")
 
 
-# ### 2.4 데이터 타입 변환
+# ### 데이터 타입 변환
 # 
-# 텐서의 데이터 타입을 확인하고 변환하는 방법을 학습합니다.
+# 텐서의 데이터 타입을 확인하고 변환하는 방법을 학습.
 # 
 # #### 왜 타입 변환이 필요한가?
 # 
@@ -301,9 +292,6 @@ print(f"높이: {image_batch.shape[2]}, 너비: {image_batch.shape[3]}")
 # torch.mean(torch.tensor([1, 2, 3]).float())  # float 변환 필요
 # ```
 
-# In[ ]:
-
-
 print("4️⃣ 데이터 타입 변환")
 print("=" * 50)
 
@@ -331,11 +319,9 @@ print(f"to(torch.float64): {tensor_double.dtype}")
 print(f"to(device, dtype): {tensor_gpu.dtype}, device: {tensor_gpu.device}")
 
 
-# ### 2.5 GPU/CPU 간 이동
+# ### GPU/CPU 간 이동
 # 
-# PyTorch에서는 `.to(device)` 메서드로 텐서를 GPU/CPU로 이동시킵니다.
-
-# In[ ]:
+# PyTorch에서는 `.to(device)` 메서드로 텐서를 GPU/CPU로 이동.
 
 
 print("5️⃣ GPU/CPU 간 텐서 이동")
@@ -353,7 +339,7 @@ print(f"GPU 텐서: {x_gpu.device}")
 print(x_gpu)
 print()
 
-# ⚠️ GPU 텐서를 NumPy로 변환하려면 먼저 CPU로 이동해야 합니다
+# ⚠️ GPU 텐서를 NumPy로 변환하려면 먼저 CPU로 이동해야함.
 if x_gpu.device.type != 'cpu':
     x_back_to_cpu = x_gpu.cpu()
     x_numpy = x_back_to_cpu.numpy()
@@ -363,9 +349,9 @@ else:
     print("CPU → NumPy 변환 완료")
 
 
-# ### 2.6 텐서 연산 (Tensor Ops)
+# ### 텐서 연산 (Tensor Ops)
 # 
-# PyTorch 텐서는 NumPy와 비슷한 문법으로 연산할 수 있어요. (대부분 “NumPy에서 하던 것 = PyTorch에도 있다” 느낌)
+# PyTorch 텐서는 NumPy와 비슷한 문법으로 연산할 수 있음. (대부분 “NumPy에서 하던 것 = PyTorch에도 있다” 느낌)
 # 
 # - **원소별 연산**: `a + b`, `a * b`  ↔  NumPy도 동일(`a + b`, `a * b`), 브로드캐스팅도 같은 감각
 # - **내적(벡터)**: `torch.dot(a, b)`  ↔  `np.dot(a, b)`
@@ -374,9 +360,6 @@ else:
 # - **reshape/view**: 둘 다 shape만 바꾸는 기능이며, `view`는 가능한 경우 메모리를 공유하는 “뷰”로 동작  ↔  NumPy의 `reshape`도 상황에 따라 view로 동작
 # - **딥러닝에서 PyTorch만의 포인트**: 텐서는 `cuda`/`mps`에서 연산 가능 + 학습 시 `requires_grad=True`면 autograd가 연산을 기록해 `backward()`로 미분 가능
 # - 참고: `xxx_()`는 in-place 연산인 경우가 많아(값이 즉시 바뀜) 디버깅/그래프 추적에서 주의
-
-# In[ ]:
-
 
 print("6️⃣ 텐서 연산")
 print("=" * 50)
@@ -406,9 +389,9 @@ print(f"최댓값: {x.max():.4f}")
 print(f"최솟값: {x.min():.4f}")
 
 
-# ### 2.7 Random 값 생성
+# ### Random 값 생성
 # 
-# 재현 가능한(reproducible) 랜덤 값 생성 방법을 학습합니다.
+# 재현 가능한(reproducible) 랜덤 값 생성 방법을 학습.
 # 
 # #### 왜 재현 가능성이 중요한가?
 # 
@@ -455,9 +438,6 @@ print(f"최솟값: {x.min():.4f}")
 # - 서로 다른 GPU 환경
 # - PyTorch 버전 차이
 
-# In[ ]:
-
-
 print("7️⃣ Random 값 생성")
 print("=" * 50)
 
@@ -481,9 +461,9 @@ print(f"정규 분포:\n{normal}")
 print(f"평균: {normal.mean():.4f}, 표준편차: {normal.std():.4f}")
 
 
-# ### 2.8 텐서 형태 변환: reshape vs view
+# ### 텐서 형태 변환: reshape vs view
 # 
-# `reshape()`와 `view()`의 차이점과 사용법을 학습합니다.
+# `reshape()`와 `view()`의 차이점과 사용법을 학습.
 # 
 # #### 핵심 차이점
 # 
@@ -548,9 +528,6 @@ print(f"평균: {normal.mean():.4f}, 표준편차: {normal.std():.4f}")
 # x.view(batch_size, -1)  # 배치 크기만 지정, 나머지 자동
 # ```
 
-# In[ ]:
-
-
 print("8️⃣ reshape vs view")
 print("=" * 50)
 
@@ -589,7 +566,7 @@ flattened = matrix.contiguous().view(-1)  # 정상 동작
 print(f"contiguous() 후 view: {flattened.shape}")
 
 
-# ### 2.9 차원 재배열: permute, transpose, t
+# ### 차원 재배열: permute, transpose
 # 
 # 텐서의 차원 순서를 변경하는 다양한 방법을 학습합니다.
 # 
@@ -671,9 +648,6 @@ print(f"contiguous() 후 view: {flattened.shape}")
 # plt.imshow(image.permute(1, 2, 0))  # (224, 224, 3)
 # ```
 
-# In[ ]:
-
-
 print("9️⃣ 차원 재배열")
 print("=" * 50)
 
@@ -705,9 +679,9 @@ print()
 print(f"permute 후 연속 메모리? {image_chw.is_contiguous()}")
 
 
-# ### 2.10 차원 추가/제거: squeeze, unsqueeze
+# ### 차원 추가/제거: squeeze, unsqueeze
 # 
-# 배치 처리를 위한 차원 조작 기법을 학습합니다.
+# 배치 처리를 위한 차원 조작 기법을 학습.
 # 
 # #### 왜 배치 차원이 필수인가?
 # 
@@ -773,9 +747,6 @@ print(f"permute 후 연속 메모리? {image_chw.is_contiguous()}")
 # bn(x)  # ✅ 정상
 # ```
 
-# In[ ]:
-
-
 print("🔟 squeeze / unsqueeze")
 print("=" * 50)
 
@@ -805,9 +776,9 @@ squeezed = tensor_with_ones.squeeze()  # 모든 크기 1 차원 제거
 print(f"모두 squeeze: {tensor_with_ones.shape} → {squeezed.shape}")
 
 
-# ### 2.11 Aggregation 연산 심화
+# ### Aggregation 연산 심화
 # 
-# `dim` 인자를 활용한 차원별 집계 연산을 마스터합니다.
+# `dim` 인자를 활용한 차원별 집계 연산을 마스터.
 # 
 # #### dim 파라미터의 의미
 # 
@@ -891,9 +862,6 @@ print(f"모두 squeeze: {tensor_with_ones.shape} → {squeezed.shape}")
 # x.mean(dim=(2, 3))  # (16, 3) - 공간 차원 축약
 # ```
 
-# In[ ]:
-
-
 print("1️⃣1️⃣ Aggregation 연산 심화")
 print("=" * 50)
 
@@ -956,9 +924,6 @@ print(f"예측 클래스: {predicted_classes}")  # tensor([7, 2, 9, 1])
 print(f"각 클래스의 확률:\n{logits}")
 
 
-# In[ ]:
-
-
 # ✅ axis(dim) 때문에 결과가 달라지는 아주 쉬운 예제
 # - NumPy의 axis == PyTorch의 dim
 # - "어느 축을 줄이느냐(=합/평균을 어디 방향으로 모으느냐)"에 따라 결과의 의미/shape가 바뀝니다.
@@ -1005,9 +970,9 @@ print("img.mean(dim=(2,3)) -> (B,C) shape:", tuple(gap.shape))
 print(gap)
 
 
-# ### 2.12 고급 인덱싱
+# ### 고급 인덱싱
 # 
-# Boolean indexing, Fancy indexing 등 고급 인덱싱 기법을 학습합니다.
+# Boolean indexing, Fancy indexing 등 고급 인덱싱 기법을 학습.
 # 
 # #### 고급 인덱싱이란?
 # 
@@ -1104,9 +1069,6 @@ print(gap)
 # output.scatter_(1, targets.unsqueeze(1), 1.0)  # one-hot encoding
 # ```
 
-# In[ ]:
-
-
 print("1️⃣2️⃣ 고급 인덱싱")
 print("=" * 50)
 
@@ -1150,7 +1112,7 @@ print(f"torch.where 결과 shape: {result.shape}")  # (4, 5) 유지
 print(f"torch.where 결과:\n{result}")
 
 
-# ### 2.13 행렬 연산 심화
+# ### 행렬 연산 심화
 # 
 # `dot()`과 `matmul()`의 차이점과 배치 행렬곱을 학습합니다.
 # 
@@ -1260,8 +1222,6 @@ print(f"torch.where 결과:\n{result}")
 # scores = torch.einsum('btd,bsd->bts', Q, K)  # (16, 10, 10)
 # ```
 
-# In[ ]:
-
 
 print("1️⃣3️⃣ 행렬 연산 심화")
 print("=" * 50)
@@ -1300,13 +1260,10 @@ print(f"변환 가중치: {weight_matrix.shape}")
 print(f"변환된 특징: {transformed.shape}")
 
 
-# ### 2.14 Autograd: 자동 미분
+# ### Autograd: 자동 미분
 # 
 # PyTorch의 핵심 기능인 autograd는 자동으로 그래디언트를 계산합니다.
 # `requires_grad=True`로 설정하면 연산이 추적됩니다.
-
-# In[ ]:
-
 
 print("Autograd: 자동 미분")
 print("=" * 50)
@@ -1358,9 +1315,6 @@ print(f"이론값: 2*(1+2+3) = 12 (모든 원소에 동일)")
 # | **산업 표준** | 프로덕션 배포 강점 | 연구/실험 강점 |
 
 # ### 3.2 코드 비교 예제
-
-# In[ ]:
-
 
 print("PyTorch vs TensorFlow 코드 비교")
 print("=" * 50)
@@ -1434,9 +1388,6 @@ print("💡 PyTorch는 학습 루프를 직접 작성하여 더 많은 제어권
 
 # ### 4.1 데이터 생성
 
-# In[ ]:
-
-
 # 시드 설정 (재현 가능성)
 torch.manual_seed(42)
 np.random.seed(42)
@@ -1464,9 +1415,6 @@ print(f"디바이스: {X_tensor.device}")
 
 
 # ### 4.2 모델 정의
-
-# In[ ]:
-
 
 import torch.nn as nn
 
@@ -1497,17 +1445,10 @@ for name, param in model.named_parameters():
 
 # ### 4.3 학습 루프
 
-# In[ ]:
-
-
 # 학습 루프 시작 전 장치 상태 강제 확인
 model = model.to(device)
 X_tensor = X_tensor.to(device)
 y_tensor = y_tensor.to(device)
-
-
-# In[ ]:
-
 
 import torch.optim as optim
 
@@ -1551,9 +1492,6 @@ print("💡 기대값: weight ≈ 2.0, bias ≈ 1.0")
 
 # ### 4.4 결과 시각화
 
-# In[ ]:
-
-
 # 학습 곡선
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
@@ -1589,9 +1527,6 @@ print(f"\n✅ 모델이 y = 2x + 1 관계를 성공적으로 학습했습니다!
 # ## 5. PyTorch 학습 루프 패턴 정리
 # 
 # PyTorch의 기본 학습 루프는 다음 5단계로 구성됩니다:
-
-# In[ ]:
-
 
 print("PyTorch 학습 루프 표준 패턴")
 print("=" * 50)
@@ -1652,13 +1587,3 @@ print("   - MPS 사용 시 loss 기록에 detach().cpu() 추가")
 # - **행렬 연산**: dot() vs matmul(), 배치 연산
 # - **nn.Module**: 모든 PyTorch 모델의 베이스 클래스
 # - **Autograd**: requires_grad, backward(), optimizer.zero_grad()
-
-# In[ ]:
-
-
-print("🎉 PyTorch 기초 튜토리얼을 완료했습니다!")
-print()
-print("다음 단계:")
-print("  → 09_pytorch_mlp_cnn_vgg.ipynb로 이동하여")
-print("     실전 이미지 분류 모델을 구현해봅시다.")
-
