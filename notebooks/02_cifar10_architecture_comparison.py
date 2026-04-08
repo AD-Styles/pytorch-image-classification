@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 # # 09. PyTorch로 MLP, CNN, VGG 구현하기
 # 
 # ## 📋 학습 목표
